@@ -29,7 +29,6 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/containerd/containerd/remotes"
 	"github.com/opencontainers/image-spec/specs-go"
 	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
 	"github.com/pkg/errors"
@@ -53,8 +52,6 @@ OCI artifact references (e.g. tags) do not support the plus sign (+). To support
 storing semantic versions, Helm adopts the convention of changing plus (+) to
 an underscore (_) in chart version tags when pushing to a registry and back to
 a plus (+) when pulling from a registry.`
-
-var errDeprecatedRemote = errors.New("providing github.com/containerd/containerd/remotes.Resolver via ClientOptResolver is no longer suported")
 
 type (
 	// Client works with OCI-compliant registries
@@ -187,12 +184,6 @@ func ClientOptHTTPClient(httpClient *http.Client) ClientOption {
 func ClientOptPlainHTTP() ClientOption {
 	return func(c *Client) {
 		c.plainHTTP = true
-	}
-}
-
-func ClientOptResolver(_ remotes.Resolver) ClientOption {
-	return func(c *Client) {
-		c.err = errDeprecatedRemote
 	}
 }
 
